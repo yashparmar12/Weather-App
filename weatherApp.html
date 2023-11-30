@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0px;
+            padding: 0px;
+            box-sizing: border-box;
+        }
+
+        body {
+            box-sizing: border-box;
+            border: 1px solid green;
+            background: rgb(42, 162, 213);
+            background-image: url('https://source.unsplash.com/1600x900/?landscape');
+        }
+
+        #wrapper {
+            width: 400px;
+            border: 1px solid rgb(253, 248, 248);
+            position: absolute;
+            transform: translate(-50%, -50%);
+            top: 50%;
+            left: 50%;
+            height: 50%;
+            box-shadow: 0px 0px 5px 0px black;
+            border: 0px solid rgb(42, 162, 213);
+            border-radius: 5px;
+            background: #000000d0;
+            color: white;
+        }
+
+        #searchBox {
+            padding: 30px;
+            position: relative;
+            
+
+        
+        }
+        #searchBox input{
+            width: 300px;
+            height: 45px;
+            font-family:'Times New Roman', Times, serif;
+            border: 2px solid #d1d3d4;
+            color: black;
+            font-size: 18px;
+            font-weight: 500;
+            border-radius: 5px;
+            padding-left: 10px;
+        }
+
+        #inputValue:focus{
+            box-shadow: 0px 0px 15px 1px white;
+            transition-duration: 0.5s;
+            
+        }
+        #search{
+            height: 45px;
+            width: 30px;
+            font-family:'Times New Roman', Times, serif;
+            border: 2px solid #d1d3d4;
+            color: black;
+            font-size: 18px;
+            font-weight: 500;
+            border-radius: 5px;
+            margin-top: 10px;
+            
+        }
+
+        #search:hover{
+            box-shadow: 0px 0px 15px 1px white;
+            transition-duration: 0.5s;
+        }
+        #weather{
+            padding-left: 30px;
+        }
+        .city{
+            font-size: 30px;
+            font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+        }
+        .temp{
+            padding-top: 20px;
+            font-size: 25px;
+            font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .discription{
+            padding-top: 40px;
+            font-size: 18px;
+            font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .humidity{
+            font-size: 18px;
+            font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .wind{
+            font-size: 18px;
+            font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+    </style>
+</head>
+
+<body>
+    <div id="wrapper">
+        <div id="searchBox">
+            <input type="text" id="inputValue">
+            <button id="search">&#128269</button>
+            <!-- <button id="search" ><i class="fas fa-search" aria-hidden="true"></i></button> -->
+        </div>
+        <div id="weather">
+            <h2 class="city">Weather in City</h2>
+            <div class="temp">51°C</div>
+            <img src="" alt="" class="icon" />
+            <div class="discription">Cloudy</div>
+            <div class="humidity">Humidity: 60%</div>
+            <div class="wind">Wind speed: 6.2km/h</div>
+        </div>
+    </div>
+
+    <script>
+        var input = document.getElementById("inputValue");
+        var btn = document.getElementById("search");
+        
+        function requestApi(){
+            var city = input.value;
+            var aKey =  "0f12c9bd979e4698a12cb5d72f49baea";
+            var api = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${aKey}`;
+            fetch(api).then((resp) => resp.json())
+                .then((data) => {
+                    console.log(data);
+                    const {name} = data;
+                    const {temp, humidity} = data.main;
+                    const {icon, description} = data.weather[0];
+                    const {speed} = data.wind;
+                    console.log(name,temp, humidity,icon, description, speed);
+
+                    document.querySelector(".city").innerText = "Weather in " + name;
+                    document.querySelector(".temp").innerText = temp + "°C";
+                    document.querySelector(".discription").innerText = description;
+                    document.querySelector(".humidity").innerText = "Humidity: "+ humidity + "%";
+                    document.querySelector(".wind").innerText = "Wind speed: "+ speed + "km/h";
+                });
+            }
+
+            btn.addEventListener("click", requestApi);
+
+    </script>
+</body>
+
+</html>
